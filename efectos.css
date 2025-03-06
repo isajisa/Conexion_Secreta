@@ -1,0 +1,102 @@
+/* Estilos para el efecto flip */
+.carta {
+  perspective: 1000px;
+  width: 100px;
+  height: 150px;
+  margin: 10px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carta:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  cursor: pointer;
+  border-color: #4caf50 solid 5px;
+}
+
+.carta-contenedor {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  cursor: pointer;
+  border-color: #4caf50 solid 5px;
+}
+
+.carta-delantera,
+.carta-trasera {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: white;
+}
+
+.carta-delantera {
+  background-color: #4caf50;
+  transform: rotateY(180deg);
+}
+
+.carta-trasera img,
+.carta-delantera img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Esto asegura que la imagen cubra toda el área sin distorsionarse */
+}
+
+.carta.flip .carta-contenedor {
+  transform: rotateY(180deg);
+}
+
+.carta.flip {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.carta.daVuelta .carta-contenedor {
+  transform: rotateY(180deg);
+}
+
+/*Efectos del radio button del formulario*/
+/* Ocultar los radio buttons por defecto */
+input[type="radio"] {
+  display: none;
+}
+
+.radio-container label {
+  cursor: pointer; /* Cambia el cursor para que se vea como un botón */
+  display: inline-block; /* Asegura que la imagen esté en línea */
+  border-radius: 10px; /* Redondea las esquinas de la imagen */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones para un efecto suave */
+}
+
+input[type="radio"]:checked + label {
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño de la imagen */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra cuando está seleccionado */
+}
+
+
+/* Puedes añadir un borde en el radio seleccionado si lo deseas */
+input[type="radio"]:checked + label {
+  border: 3px solid #ff7300; /* Color del borde cuando está seleccionado */
+}
+
+img{
+  width: 75px;
+  height: 100px;
+  border-radius: 10px;
+}
+
+#contenedor{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 20px;
+  justify-content: center;
+}

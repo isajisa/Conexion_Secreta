@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONEXION SECRETA</title>
+    <link rel="stylesheet" href="maquetacion.css">
+    <script type="module" src="colores.js" defer></script>
+    <script type="module" src="script.js" defer></script>
+    <link rel="stylesheet" href="efectos.css">
+</head>
+
+<body>
+    <div id="container">
+        <!--Cabecera-->
+        <header class="centrar">
+            <h1 id="textoheader">CONEXION SECRETA</h1>
+        </header>
+
+        <!--barra navegacion-->
+        <nav class="centrar">
+            <a href="index.html">
+                <button>Reiniciar Juego</button>
+            </a>
+            <button id="botonColores">Temas</button>
+        </nav>
+
+        <!--Barra de estadisticas del juego-->
+        <aside>
+            <div id="divaside">
+                <p>Racha actual: <span id="rachaActual">0</span></p>
+                <p>Racha maxima: <span id="rachaMaxima">0</span></p>
+                <p>Puntos: <span id="puntos">0</span></p>
+                <p>Temporizador: <span id="temporizador">00</span></p>
+                <p>Parejas encontradas: <span id="parcorrecta">0</span></p>
+                <p>Porcentaje aciertos: <span id="porcacierto">0</span>%</p>
+            </div>
+        </aside>
+
+        <!--Juego cartas-->
+        <section class="centrar" id="secciondeljuego">
+            <button id="parametrosJuego">Empezar a Jugar</button>
+            <div id="contenedorvidas" class="contenedor_vidas"></div>
+            <div id="contenedorcartas" class="contenedor_cartas"></div>
+
+            <div id="divformulario">
+                <form action="" id="form">
+                    <label for="Cartas">Que tipo de baraja quieres usar:</label>
+                    <div id="contenedor">
+                        <div class="radio-container">
+                            <input type="radio" id="carta1" name="carta" value="1">
+                            <label for="carta1">
+                                <img src="img/cartatrasera1.jpg" alt="Carta 1">
+                            </label>
+                        </div>
+                        
+                        <div class="radio-container">
+                            <input type="radio" id="carta2" name="carta" value="2">
+                            <label for="carta2">
+                                <img src="img/cartatrasera2.jpg" alt="Carta 2">
+                            </label>
+                        </div>
+                        
+                        <div class="radio-container">
+                            <input type="radio" id="carta3" name="carta" value="3">
+                            <label for="carta3">
+                                <img src="img/cartatrasera3.jpg" alt="Carta 3">
+                            </label>
+                        </div>
+                    
+                        <div class="radio-container">
+                            <input type="radio" id="carta4" name="carta" value="4">
+                            <label for="carta4">
+                                <img src="img/cartatrasera4.jpg" alt="Carta 4">
+                            </label>
+                        </div>
+                    </div>
+
+                    <label for="Parejas">Cuantas parejas quieres usar:</label>
+                    <input type="number" name="Parejas" min="1" max="20" id="parejasForm" required><br />
+
+                    <label for="Vidas">Cuantas vidas quieres usar:</label>
+                    <input type="number" name="Vidas" min="1" max="10" id="vidasForm" required><br /><br />
+
+                    <button class="centrar" type="submit" id="jugar">Jugar</button>
+                </form>
+            </div>
+        </section>
+
+        <!--Pie de pagina-->
+        <footer class="centrar">
+            <h2 id="textofooter">Hecho por: Isabel Jiménez Sánchez</h2>
+        </footer>
+    </div>
+</body>
+
+</html>

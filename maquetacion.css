@@ -1,0 +1,134 @@
+:root{
+    --colortema:  rgb(68, 150, 10);
+}
+
+body , html{
+    margin: 0;
+    padding: 0;
+    background-image: url('img/fondo2.jpg');
+    background-size: cover;  /* Ajusta la imagen para que cubra toda la sección */
+    background-position: center;  /* Centra la imagen en la sección */
+    background-repeat: no-repeat;  /* Evita que la imagen se repita */
+    font-family: fantasy;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.centrar{
+    justify-items: center;
+}
+
+#container{
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr 10fr 2fr;
+    grid-template-columns: 1fr;
+    min-height: 100%;
+}
+
+header{
+    font-size: 25px;
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    font-family: sans-serif;
+    font-style: oblique;
+}
+
+nav{
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+}
+
+aside{
+    grid-column: 1;
+    grid-row: 3;
+    width: 100%;
+}
+
+section{
+    grid-column: 1;
+    grid-row: 4;
+    width: 100%;
+}
+
+footer{
+    grid-column: 1;
+    grid-row: 5;
+    width: 100%;
+}
+
+#divaside{
+    background-color: var(--colortema);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+}
+
+#divdentro{
+    margin-right: 40px;
+}
+
+#divformulario{
+    display: none;
+    width:270px;
+    height: 500px;
+    background-color: var(--colortema);
+    border-radius: 15px;
+}
+
+form{
+    display: grid;
+    margin: 10px;
+    padding: 20px;
+}
+
+/* Estilo basico para el contenedor flexbox */
+.contenedor_cartas {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px;
+    justify-content: center;
+}
+
+/* Estilo para los divs dentro del contenedor */
+.contenedor_cartas > div {
+    width: 165px;  /* Ancho de la carta */
+    height: 245px;
+    border-radius: 15px;
+    display: flex;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 5px;
+    overflow: hidden;
+}
+
+.contenedor_vidas{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px;
+    justify-content: center;
+}
+
+.contenedor_vidas > img {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    box-sizing: border-box;
+}
+
+#textoheader,  #textofooter{
+    background-color: var(--colortema);
+    border-radius: 15px;
+}
+
+img {
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    pointer-events: none;
+}
