@@ -63,6 +63,10 @@
   transform: rotateY(180deg);
 }
 
+.carta.seleccionada {
+  border: 3px solid #ff0800; /* Color del borde para las cartas seleccionadas */
+}
+
 /*Efectos del radio button del formulario*/
 /* Ocultar los radio buttons por defecto */
 input[type="radio"] {

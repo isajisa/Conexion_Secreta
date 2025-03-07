@@ -39,6 +39,8 @@ header{
 nav{
     grid-column: 1;
     grid-row: 2;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 section{
@@ -69,6 +71,20 @@ footer{
 
 #textoheader,  #textofooter{
     background-color: var(--colortema);
+    border-radius: 15px;
+}
+
+#botonColores, #botonreinicio{
+    font-family: fantasy;
+    background-color: var(--colortema);
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
     border-radius: 15px;
 }
 

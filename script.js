@@ -1,5 +1,13 @@
 import { colores, cambioColor, colorIndice } from './colores.js';
 
+let seleccionCarta = new Audio('sonidos/selecionarcarta.mp3');
+let acertar = new Audio('sonidos/acertar.mp3');
+let equivocado = new Audio('sonidos/equivocado.mp3');
+let empezar = new Audio('sonidos/empezar.mp3');
+let perder = new Audio('sonidos/perder.mp3');
+let ganador = new Audio('sonidos/ganador.mp3');
+let form = new Audio('sonidos/form.mp3');
+
 class carta {
     constructor(valor) {
         this.valor = valor;  // Almacena el valor de la carta
@@ -215,10 +223,13 @@ class temporizador {
             setTimeout(() => {
                 if (tiempoRestante < 0) {
                     clearInterval(temporizador);  // Detiene el temporizador cuando llega a 0
-                    empezarJuego.ganarPerder = "Has perdido!!, se acabo el tiempo.";
-                    eJ.ultimaPagina();
+                    perder.play();
+                    perder.addEventListener('ended', () => {
+                        empezarJuego.ganarPerder = "Has perdido!!, se acabo el tiempo.";
+                        eJ.ultimaPagina();
+                    });
                 }
-            }, 150);
+            }, 1000);
         }, 1000);
     }
 }
@@ -233,6 +244,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         cV.crearVida(event);
         temp.temporizador();
         empezarJuego.divformulario.style.display = 'none';
+        empezar.play();
     });
 });
 
@@ -316,6 +328,7 @@ class empezarJuego {
     }
 
     parametrosJuego() {
+        form.play();
         empezarJuego.divformulario = document.getElementById("divformulario");
         empezarJuego.divformulario.style.display = 'flex';
     }
@@ -328,7 +341,10 @@ class empezarJuego {
         // Solo voltear la carta si no está bloqueada la selección
         if (empezarJuego.seleccionBloqueada || carta.classList.contains('flip') || carta.classList.contains('daVuelta')) return;
 
+        seleccionCarta.play();
+
         carta.classList.add('flip');  // Voltear la carta
+        carta.classList.add('seleccionada');  // Agregar la clase seleccionada
         carta.estado = 'descubierta';  // Cambiar el estado a descubierta
 
         // Verificar si ya hay dos cartas volteadas
@@ -384,13 +400,15 @@ class empezarJuego {
 
             // Comparamos los valores usando 'data-valor'
             if (carta1.getAttribute('data-valor') === carta2.getAttribute('data-valor')) {
-                // Si son iguales, es una pareja
+                acertar.play();
                 console.log('¡Es una pareja!');
                 setTimeout(() => {
                     carta1.classList.remove('flip');
                     carta2.classList.remove('flip');
                     carta1.classList.add("daVuelta");
                     carta2.classList.add("daVuelta");
+                    carta1.classList.remove('seleccionada');  // Quitar la clase seleccionada
+                    carta2.classList.remove('seleccionada');  // Quitar la clase seleccionada
                     empezarJuego.correcta++;
                     empezarJuego.puntos += 100;
                     console.log("puntos: " + empezarJuego.puntos);
@@ -418,18 +436,24 @@ class empezarJuego {
                 }, 1000);
 
             } else {
+                equivocado.play();
                 // Si no son iguales, las volvemos a dar la vuelta
                 console.log('No es una pareja');
                 setTimeout(() => {
                     carta1.classList.remove('flip');
                     carta2.classList.remove('flip');
+                    carta1.classList.remove('seleccionada');  // Quitar la clase seleccionada
+                    carta2.classList.remove('seleccionada');  // Quitar la clase seleccionada
                     carta1.estado = 'oculta';
                     carta2.estado = 'oculta';
                     cV.reducirVida();  // Reducir vida si no es pareja
                     if (cV.vidas <= 0) {
                         // Fin del juego si se quedan sin vidas
-                        empezarJuego.ganarPerder = "Has perdido!!!";
-                        eJ.ultimaPagina();
+                        perder.play();
+                        perder.addEventListener('ended', () => {
+                            empezarJuego.ganarPerder = "Has perdido!!!";
+                            eJ.ultimaPagina();
+                        });
                         // Aquí puedes agregar más lógica para finalizar el juego
                     }
 
@@ -444,7 +468,35 @@ class empezarJuego {
     }
 }
 
+/*Implementacion de desplazamiento con el raton al pinchar la pantalla no con la rueda*/
+let isDown = false;
+let startY;
+let scrollTop;
 
+document.addEventListener("mousedown", (e) => {
+    isDown = true;
+    startY = e.pageY - window.scrollY;
+    scrollTop = window.scrollY;
+});
+
+document.addEventListener("mouseleave", () => {
+    isDown = false;
+});
+
+document.addEventListener("mouseup", () => {
+    isDown = false;
+});
+
+document.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const y = e.pageY - window.scrollY;
+    const walk = (y - startY) * 2; // Ajusta la sensibilidad
+    window.scrollTo({
+        top: scrollTop - walk,
+        behavior: "smooth",
+    });
+});
 
 
 const temp = new temporizador();
