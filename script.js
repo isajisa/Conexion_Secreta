@@ -428,8 +428,11 @@ class empezarJuego {
                     this.actualizarRacha();
 
                     if (empezarJuego.correcta == cC.parejas) { // Compara que las cartas levantadas sean las mismas que las parejas que hay que encontrar
-                        empezarJuego.ganarPerder = "Has ganado!!!";
-                        eJ.ultimaPagina();
+                        ganador.play();
+                        ganador.addEventListener('ended', () => {
+                            empezarJuego.ganarPerder = "Has ganado!!!";
+                            eJ.ultimaPagina();
+                        });
                     }
                     // Desbloquear la selección después de la comparación
                     empezarJuego.seleccionBloqueada = false;
