@@ -98,7 +98,7 @@ form{
 
 /* Estilo para los divs dentro del contenedor */
 .contenedor_cartas > div {
-    width: 165px;  /* Ancho de la carta */
+    width: 165px; 
     height: 245px;
     border-radius: 15px;
     display: flex;
@@ -164,8 +164,8 @@ img {
 
 @media (max-width: 1200px) {
     .contenedor_cartas > div {
-        width: 150px;  /* Ancho de la carta relativo al ancho de la ventana */
-        height: 230px; /* Altura de la carta relativa al ancho de la ventana */
+        width: 150px;
+        height: 230px;
     }
 
     .contenedor_vidas > img {
@@ -176,8 +176,8 @@ img {
 
 @media (max-width: 800px) {
     .contenedor_cartas > div {
-        width: 90px;  /* Ancho de la carta relativo al ancho de la ventana */
-        height: 160px; /* Altura de la carta relativa al ancho de la ventana */
+        width: 90px; 
+        height: 160px;
     }
 
     .contenedor_vidas > img {
@@ -188,8 +188,8 @@ img {
 
 @media (max-width: 600px) {
     .contenedor_cartas > div {
-        width: 70px;  /* Ancho de la carta relativo al ancho de la ventana */
-        height: 120px; /* Altura de la carta relativa al ancho de la ventana */
+        width: 70px; 
+        height: 120px;
     }
 
     .contenedor_vidas > img {
@@ -200,7 +200,7 @@ img {
 
 @media (max-width: 400px) {
     .contenedor_cartas > div {
-        width: 50px;  /* Ancho de la carta relativo al ancho de la ventana */
-        height: 80px; /* Altura de la carta relativa al ancho de la ventana */
+        width: 50px; 
+        height: 80px;
     }
 }

@@ -40,14 +40,16 @@
 .carta-delantera {
   background-color: #4caf50;
   transform: rotateY(180deg);
+  border: 3px solid #ff0800;
+  box-sizing: border-box;
+  border-radius: 15px;
 }
 
 .carta-trasera img,
 .carta-delantera img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  /* Esto asegura que la imagen cubra toda el área sin distorsionarse */
+  object-fit: cover; /* Esto asegura que la imagen cubra toda el área sin distorsionarse */
 }
 
 .carta.flip .carta-contenedor {
@@ -63,10 +65,6 @@
   transform: rotateY(180deg);
 }
 
-.carta.seleccionada {
-  border: 3px solid #ff0800; /* Color del borde para las cartas seleccionadas */
-}
-
 /*Efectos del radio button del formulario*/
 /* Ocultar los radio buttons por defecto */
 input[type="radio"] {
@@ -76,7 +74,7 @@ input[type="radio"] {
 .radio-container label {
   cursor: pointer; /* Cambia el cursor para que se vea como un botón */
   display: inline-block; /* Asegura que la imagen esté en línea */
-  border-radius: 10px; /* Redondea las esquinas de la imagen */
+  border-radius: 10px;
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones para un efecto suave */
 }
 
@@ -85,8 +83,6 @@ input[type="radio"]:checked + label {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra cuando está seleccionado */
 }
 
-
-/* Puedes añadir un borde en el radio seleccionado si lo deseas */
 input[type="radio"]:checked + label {
   border: 3px solid #ff7300; /* Color del borde cuando está seleccionado */
 }

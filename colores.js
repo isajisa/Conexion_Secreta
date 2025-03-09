@@ -5,9 +5,9 @@ export const colores = [
     "rgb(67, 48, 78)"
 ];
 
-export let colorIndice = localStorage.getItem("indiceColor") ? parseInt(localStorage.getItem("indiceColor")) : 0;
+let colorIndice = localStorage.getItem("indiceColor") ? parseInt(localStorage.getItem("indiceColor")) : 0;
 
-export function cambioColor() {
+function cambioColor() {
     colorIndice = (colorIndice + 1) % colores.length;
     paletaColores();
     localStorage.setItem("indiceColor", colorIndice);

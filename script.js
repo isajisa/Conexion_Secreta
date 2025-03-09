@@ -1,4 +1,4 @@
-import { colores, cambioColor, colorIndice } from './colores.js';
+import { colores} from './colores.js';
 
 let seleccionCarta = new Audio('sonidos/selecionarcarta.mp3');
 let acertar = new Audio('sonidos/acertar.mp3');
@@ -9,9 +9,9 @@ let ganador = new Audio('sonidos/ganador.mp3');
 let form = new Audio('sonidos/form.mp3');
 
 class carta {
-    constructor(valor) {
-        this.valor = valor;  // Almacena el valor de la carta
-        this.estado = 'oculta';  // Estado inicial de la carta (oculta)
+    constructor(valor, estado) {
+        this.valor = valor;
+        this.estado = 'oculta';
         this.parejas = 0;
     }
 
@@ -39,67 +39,53 @@ class carta {
         if (this.parejas < 1 || this.parejas > 15) {
             alert('Por favor, ingrese un número de parejas entre 1 y 15.');
         } else {
-            // Crear las cartas en pares
             let cartasParaJugar = [];
             for (let i = 0; i < this.parejas; i++) {
-                cartasParaJugar.push(valoresCartas[i % valoresCartas.length], valoresCartas[i % valoresCartas.length]); // Añadir las imágenes en pares
+                cartasParaJugar.push(valoresCartas[i % valoresCartas.length], valoresCartas[i % valoresCartas.length]);
             }
 
             // Barajar los valores de las cartas
             this.barajarCartas(cartasParaJugar);
 
-            // Crear las cartas y agregarlas al contenedor
+            // Crea las cartas y las agrega al contenedor
             for (let i = 0; i < cartasParaJugar.length; i++) {
                 const newCarta = document.createElement('div');
                 newCarta.classList.add('carta');
 
-                // Crear el contenedor que tendrá las dos caras de la carta
                 const cartaContenedor = document.createElement('div');
                 cartaContenedor.classList.add('carta-contenedor');
 
-                // Crear la parte trasera de la carta
                 const cartaTrasera = document.createElement('div');
                 cartaTrasera.classList.add('carta-trasera');
 
-                // Crear un elemento <img> para la parte trasera
                 const imagenTrasera = document.createElement('img');
-                imagenTrasera.src = imgatras[formimagenes.indice];  // Ruta de la imagen trasera
-                imagenTrasera.alt = "Parte trasera de la carta";  // Texto alternativo
+                imagenTrasera.src = imgatras[formImagenes.indice]; 
+                imagenTrasera.alt = "Parte trasera de la carta"; 
 
-                // Añadir la imagen al div de la parte trasera
                 cartaTrasera.appendChild(imagenTrasera);
 
-                // Crear la parte delantera de la carta
                 const cartaDelantera = document.createElement('div');
                 cartaDelantera.classList.add('carta-delantera');
 
-                // Crear un elemento <img> para la parte delantera (usar la ruta de la imagen de la carta)
                 const imagenDelantera = document.createElement('img');
-                imagenDelantera.src = cartasParaJugar[i];  // Usamos las rutas de imagen del array
-                imagenDelantera.alt = "Carta " + (i + 1);  // Texto alternativo
+                imagenDelantera.src = cartasParaJugar[i]; 
+                imagenDelantera.alt = "Carta " + (i + 1); 
 
-                // Añadir la imagen al div de la parte delantera
                 cartaDelantera.appendChild(imagenDelantera);
 
-                // Asignar un valor a la carta (en este caso, es la ruta de la imagen)
-                newCarta.setAttribute('data-valor', cartasParaJugar[i]);  // Asignamos la ruta de la imagen como data-valor
+                newCarta.setAttribute('data-valor', cartasParaJugar[i]);  
 
-                // Añadir las dos caras al contenedor de la carta
                 cartaContenedor.appendChild(cartaTrasera);
                 cartaContenedor.appendChild(cartaDelantera);
 
-                // Añadir el contenedor a la carta
                 newCarta.appendChild(cartaContenedor);
 
-                // Añadir la carta al array de cartas
                 this.arrayCartas.push(newCarta);
 
-                // Añadir la carta al contenedor principal
                 contenedorCartas.appendChild(newCarta);
 
-                // Añadir el evento de flip a la carta
                 newCarta.addEventListener('click', () => {
-                    eJ.voltearCarta(newCarta);
+                    this.voltearCarta(newCarta);
                 });
             }
         }
@@ -113,32 +99,44 @@ class carta {
             carta.classList.add('flip');
         });
 
-        // Después de 3 segundos, volvemos a poner las cartas en su estado inicial
+        // Después de 2 segundos, volvemos a poner las cartas en su estado inicial
         setTimeout(() => {
             todasLasCartas.forEach(carta => {
                 carta.classList.remove('flip');
             });
-        }, 2000);  // 3000 milisegundos = 3 segundos
+        }, 2000);
+    }
+
+    voltearCarta(carta) {
+        // Solo voltear la carta si no está bloqueada la selección
+        if (empezarJuego.seleccionBloqueada || carta.classList.contains('flip') || carta.classList.contains('daVuelta')) return;
+
+        seleccionCarta.play();
+
+        carta.classList.add('flip');  // Voltear la carta
+        carta.classList.add('seleccionada');  // Agregar la clase seleccionada
+        carta.estado = 'descubierta';  // Cambiar el estado a descubierta
+
+        eJ.comprobarPareja();
     }
 
     barajarCartas(cartasParaJugar) {
-        // Barajamos el array de valores utilizando el algoritmo de Fisher-Yates
+        // Barajamos el array de valores de las cartas
         for (let i = cartasParaJugar.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [cartasParaJugar[i], cartasParaJugar[j]] = [cartasParaJugar[j], cartasParaJugar[i]];  // Intercambiamos los valores
         }
 
-        // Limpiar el contenedor antes de añadir las cartas barajadas
         const contenedorCartas = document.getElementById('contenedorcartas');
-        contenedorCartas.innerHTML = '';  // Limpiamos el contenedor de cartas
+        // Limpiar el contenedor antes de añadir las cartas barajadas
+        contenedorCartas.innerHTML = '';
 
-        // Actualizar los valores de las cartas ya existentes en el DOM
         this.arrayCartas.forEach((carta, index) => {
-            carta.setAttribute('data-valor', cartasParaJugar[index]);  // Actualizamos el valor de cada carta
-            const cartaContenedor = carta.querySelector('.carta-contenedor');  // Seleccionamos el contenedor de la carta
-            const cartaDelantera = cartaContenedor.querySelector('.carta-delantera');  // Seleccionamos la cara delantera
-            const imagenDelantera = cartaDelantera.querySelector('img');  // Seleccionamos la imagen en la parte delantera
-            imagenDelantera.src = cartasParaJugar[index];  // Actualizamos la imagen de la carta delantera
+            carta.setAttribute('data-valor', cartasParaJugar[index]);
+            const cartaContenedor = carta.querySelector('.carta-contenedor');
+            const cartaDelantera = cartaContenedor.querySelector('.carta-delantera'); 
+            const imagenDelantera = cartaDelantera.querySelector('img');
+            imagenDelantera.src = cartasParaJugar[index];
 
             // Volvemos a agregar la carta al contenedor en el nuevo orden
             contenedorCartas.appendChild(carta);
@@ -153,26 +151,23 @@ class vida {
     }
 
     crearVida() {
-        // Pedimos el número de vidas al usuario
         this.vidas = empezarJuego.vidas;
 
         if (this.vidas < 1 || this.vidas > 10) {
             alert('Por favor, ingrese un número de vidas entre 1 y 10.');
         } else {
-            // Crear las imágenes de vidas
             const contenedorVidas = document.getElementById('contenedorvidas');
             contenedorVidas.innerHTML = '';  // Limpiar el contenedor de vidas
 
             // Crear las imágenes de vidas
             for (let i = 1; i <= this.vidas; i++) {
                 let newVida = document.createElement('img');
-                newVida.src = "img/vidas.png";  // Imagen de vida
+                newVida.src = "img/vidas.png";
                 newVida.classList.add('vida');
-                contenedorVidas.appendChild(newVida);  // Añadir cada imagen al contenedor
+                contenedorVidas.appendChild(newVida);
             }
         }
     }
-
 
     actualizarVidas() {
         // Obtener todas las imágenes de vida
@@ -209,6 +204,13 @@ class contadores {
         console.log(this.porcentaje + "%");
         resultadoPorcentaje.innerText = this.porcentaje;
     }
+
+    actualizarRacha() {
+        // Actualizamos la racha mostrada en el HTML
+        if (this.rachaContenedor) {
+            this.rachaContenedor.innerText = `Racha: ${empezarJuego.racha} (Máxima: ${empezarJuego.maxRacha})`;
+        }
+    }
 }
 
 class temporizador {
@@ -219,7 +221,6 @@ class temporizador {
     temporizador() {
         this.tiempoRestante = empezarJuego.tiempoRestante;
         let contTiempo = document.getElementById('temporizador');
-        console.log("Tiempo restante: " + this.tiempoRestante);
 
         let temporizador = setInterval(() => {
             contTiempo.innerText = this.tiempoRestante;
@@ -228,7 +229,7 @@ class temporizador {
             if (this.tiempoRestante < 0) {
                 clearInterval(temporizador);  // Detiene el temporizador cuando llega a 0
                 perder.play();
-                perder.addEventListener('ended', () => {
+                perder.addEventListener('ended', () => { // Hace que termine el sonido de perder para que se pueda terminar de escuchar
                     empezarJuego.ganarPerder = "Has perdido!!, se acabo el tiempo.";
                     eJ.ultimaPagina();
                 });
@@ -252,7 +253,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
 });
 
-class formimagenes {
+class formImagenes {
     static indice = 0;
 
     constructor() {
@@ -270,31 +271,31 @@ class formimagenes {
     }
 
     carta1() {
-        formimagenes.indice = 0;
+        formImagenes.indice = 0;
         console.log("Carta 1 seleccionada");
-        document.documentElement.style.setProperty("--colortema", colores[formimagenes.indice]);
-        localStorage.setItem("indiceColor", formimagenes.indice);
+        document.documentElement.style.setProperty("--colortema", colores[formImagenes.indice]);
+        localStorage.setItem("indiceColor", formImagenes.indice);
     }
 
     carta2() {
-        formimagenes.indice = 1;
+        formImagenes.indice = 1;
         console.log("Carta 2 seleccionada");
-        document.documentElement.style.setProperty("--colortema", colores[formimagenes.indice]);
-        localStorage.setItem("indiceColor", formimagenes.indice);
+        document.documentElement.style.setProperty("--colortema", colores[formImagenes.indice]);
+        localStorage.setItem("indiceColor", formImagenes.indice);
     }
 
     carta3() {
-        formimagenes.indice = 2;
+        formImagenes.indice = 2;
         console.log("Carta 3 seleccionada");
-        document.documentElement.style.setProperty("--colortema", colores[formimagenes.indice]);
-        localStorage.setItem("indiceColor", formimagenes.indice);
+        document.documentElement.style.setProperty("--colortema", colores[formImagenes.indice]);
+        localStorage.setItem("indiceColor", formImagenes.indice);
     }
 
     carta4() {
-        formimagenes.indice = 3;
+        formImagenes.indice = 3;
         console.log("Carta 4 seleccionada");
-        document.documentElement.style.setProperty("--colortema", colores[formimagenes.indice]);
-        localStorage.setItem("indiceColor", formimagenes.indice);
+        document.documentElement.style.setProperty("--colortema", colores[formImagenes.indice]);
+        localStorage.setItem("indiceColor", formImagenes.indice);
     }
 }
 
@@ -303,7 +304,7 @@ class empezarJuego {
     static intentos = 0;
     static puntos = 0;
     static seleccionBloqueada = false;  // Agregado para bloquear las selecciones
-    static racha = 0;  // Variable para llevar la cuenta de la racha
+    static racha = 0;
     static maxRacha = 0;
     static ganarPerder;
     static parejas = 0;
@@ -342,20 +343,6 @@ class empezarJuego {
         console.log("Iniciando partida...");
     }
 
-    voltearCarta(carta) {
-        // Solo voltear la carta si no está bloqueada la selección
-        if (empezarJuego.seleccionBloqueada || carta.classList.contains('flip') || carta.classList.contains('daVuelta')) return;
-
-        seleccionCarta.play();
-
-        carta.classList.add('flip');  // Voltear la carta
-        carta.classList.add('seleccionada');  // Agregar la clase seleccionada
-        carta.estado = 'descubierta';  // Cambiar el estado a descubierta
-
-        // Verificar si ya hay dos cartas volteadas
-        eJ.comprobarPareja();
-    }
-
     ultimaPagina() {
         console.log("ganadoperdido:", empezarJuego.ganarPerder);
         console.log("Puntos:", empezarJuego.puntos);
@@ -375,14 +362,7 @@ class empezarJuego {
         // Retrasar la redirección para asegurar que el localStorage se haya actualizado
         setTimeout(() => {
             window.location.replace("pantallafinal.html");
-        }, 100); // Retrasa 100 ms
-    }
-
-    actualizarRacha() {
-        // Actualizamos la racha mostrada en el HTML
-        if (this.rachaContenedor) {
-            this.rachaContenedor.innerText = `Racha: ${empezarJuego.racha} (Máxima: ${empezarJuego.maxRacha})`;
-        }
+        }, 100);
     }
 
     comprobarPareja() {
@@ -412,8 +392,8 @@ class empezarJuego {
                     carta2.classList.remove('flip');
                     carta1.classList.add("daVuelta");
                     carta2.classList.add("daVuelta");
-                    carta1.classList.remove('seleccionada');  // Quitar la clase seleccionada
-                    carta2.classList.remove('seleccionada');  // Quitar la clase seleccionada
+                    carta1.classList.remove('seleccionada');  
+                    carta2.classList.remove('seleccionada');  
                     empezarJuego.correcta++;
                     empezarJuego.puntos += 100;
                     console.log("puntos: " + empezarJuego.puntos);
@@ -430,7 +410,7 @@ class empezarJuego {
                     }
 
                     // Mostrar la racha actual
-                    this.actualizarRacha();
+                    conta.actualizarRacha();
 
                     if (empezarJuego.correcta == cC.parejas) { // Compara que las cartas levantadas sean las mismas que las parejas que hay que encontrar
                         ganador.play();
@@ -466,7 +446,7 @@ class empezarJuego {
                     }
 
                     empezarJuego.racha = 0;
-                    this.actualizarRacha();
+                    conta.actualizarRacha();
                     // Desbloquear la selección después de la comparación
                     empezarJuego.seleccionBloqueada = false;
                 }, 1000);  // Esperamos 1 segundo para dar la vuelta
@@ -481,4 +461,4 @@ const conta = new contadores();
 const cV = new vida();
 const cC = new carta();
 const eJ = new empezarJuego();
-const formimg = new formimagenes();
+const formimg = new formImagenes();
