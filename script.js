@@ -212,24 +212,27 @@ class contadores {
 }
 
 class temporizador {
+    constructor() {
+        this.tiempo = 0;
+    }
+
     temporizador() {
-        let tiempoRestante = 60; // Temporizador de 10 segundos
+        this.tiempoRestante = empezarJuego.tiempoRestante;
         let contTiempo = document.getElementById('temporizador');
+        console.log("Tiempo restante: " + this.tiempoRestante);
 
-        let temporizador = setInterval(function () {
-            contTiempo.innerText = tiempoRestante;
-            tiempoRestante--;  // Resta 1 segundo
+        let temporizador = setInterval(() => {
+            contTiempo.innerText = this.tiempoRestante;
+            this.tiempoRestante--;  // Resta 1 segundo
 
-            setTimeout(() => {
-                if (tiempoRestante < 0) {
-                    clearInterval(temporizador);  // Detiene el temporizador cuando llega a 0
-                    perder.play();
-                    perder.addEventListener('ended', () => {
-                        empezarJuego.ganarPerder = "Has perdido!!, se acabo el tiempo.";
-                        eJ.ultimaPagina();
-                    });
-                }
-            }, 1000);
+            if (this.tiempoRestante < 0) {
+                clearInterval(temporizador);  // Detiene el temporizador cuando llega a 0
+                perder.play();
+                perder.addEventListener('ended', () => {
+                    empezarJuego.ganarPerder = "Has perdido!!, se acabo el tiempo.";
+                    eJ.ultimaPagina();
+                });
+            }
         }, 1000);
     }
 }
@@ -240,6 +243,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         event.preventDefault();
         empezarJuego.parejas = parseInt(document.getElementById('parejasForm').value);
         empezarJuego.vidas = parseInt(document.getElementById('vidasForm').value);
+        empezarJuego.tiempoRestante = parseInt(document.getElementById('tiempoForm').value);
         cC.crearCarta(event);
         cV.crearVida(event);
         temp.temporizador();
@@ -304,6 +308,7 @@ class empezarJuego {
     static ganarPerder;
     static parejas = 0;
     static vidas = 0;
+    static tiempoRestante = 0;
     static divformulario;
     static form = document.getElementById("form");
 
@@ -470,37 +475,6 @@ class empezarJuego {
         }
     }
 }
-
-/*Implementacion de desplazamiento con el raton al pinchar la pantalla no con la rueda*/
-let isDown = false;
-let startY;
-let scrollTop;
-
-document.addEventListener("mousedown", (e) => {
-    isDown = true;
-    startY = e.pageY - window.scrollY;
-    scrollTop = window.scrollY;
-});
-
-document.addEventListener("mouseleave", () => {
-    isDown = false;
-});
-
-document.addEventListener("mouseup", () => {
-    isDown = false;
-});
-
-document.addEventListener("mousemove", (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const y = e.pageY - window.scrollY;
-    const walk = (y - startY) * 2; // Ajusta la sensibilidad
-    window.scrollTo({
-        top: scrollTop - walk,
-        behavior: "smooth",
-    });
-});
-
 
 const temp = new temporizador();
 const conta = new contadores();

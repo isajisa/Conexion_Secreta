@@ -75,8 +75,8 @@ footer{
 
 #divformulario{
     display: none;
-    width:270px;
-    height: 500px;
+    width: 270px;
+    height: 550px;
     background-color: var(--colortema);
     border-radius: 15px;
 }
